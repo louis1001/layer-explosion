@@ -21,8 +21,5 @@ let package = Package(
         .target(
             name: "layer-explosion",
             dependencies: []),
-        .testTarget(
-            name: "layer-explosionTests",
-            dependencies: ["layer-explosion"]),
     ]
 )
