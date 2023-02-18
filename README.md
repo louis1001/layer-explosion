@@ -2,6 +2,8 @@
 
 This is a SwiftUI library that adds a pseudo-3d effect to your views, imitating the View Debugger for Xcode and UIKit.
 
+https://user-images.githubusercontent.com/26968689/219876748-f2c540d9-94e5-4e36-b74e-d5524276ce07.mp4
+
 ## Installing
 It can be installed with Swift Package Manager:
 ```
@@ -11,7 +13,7 @@ https://github.com/louis1001/layer-explosion
 ## Usage
 
 ### Parallax gestures
-To create a "parallax context" you use `.parallaxTouchGesture()` as a view modifier. This works like other gestures, getting drag gestures withing the view bounds, but it also makes that view a parallax layer which means it will also be rotated on the gesture.
+To create a "parallax context" you use `.parallaxTouchGesture()` as a view modifier. This works like other gestures, getting drag events withing the view bounds, but it also makes that view a parallax layer which means it will be rotated on the gesture.
 
 ```swift
 var body: some View {
@@ -68,6 +70,8 @@ var body: some View {
     .parallaxTouchGesture(strength: 0.2)
 }
 ```
+
+https://user-images.githubusercontent.com/26968689/219876813-226e7a88-a419-4229-a297-5612a5c8ff05.mp4
 
 ## Current Problems
 
