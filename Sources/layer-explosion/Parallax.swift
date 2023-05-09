@@ -1,24 +1,23 @@
-//
-//  Parallax.swift
-//  
-//
-//  Created by Luis Gonzalez on 18/2/23.
-//
+// https://github.com/louis1001/layer-explosion?ref=iosexample.com
 
 import SwiftUI
 
 struct ParallaxModifier: ViewModifier {
     var zIndex: Int
+    var direction:Double
     
     @Environment(\.parallaxLevel) var parallaxLevel
-    @Environment(\.parallaxOffset) var parallaxOffset
+    @Environment(\.parallaxOffsetTouch) var parallaxOffsetTouch
+    @Environment(\.parallaxOffsetMotion) var parallaxOffsetMotion
     @Environment(\.parallaxBorder) var parallaxBorder
-    @Environment(\.parallaxStrength) var parallaxStrength
+    @Environment(\.parallaxTouchStrength) var parallaxTouchStrength
+    @Environment(\.parallaxMotionStrength) var parallaxMotionStrength
     
     @ViewBuilder
     func body(content: Content) -> some View {
+        
         let actualLevel = parallaxLevel + zIndex
-        let offsetDamp = 0.2 * parallaxStrength
+        let offsetDamp = 0.2 * ((parallaxTouchStrength + parallaxMotionStrength) / 2)
         
         let content = Group {
             if let parallaxBorder {
@@ -30,29 +29,29 @@ struct ParallaxModifier: ViewModifier {
         }
         
         let rotationDampened = CGSize(
-            width: parallaxOffset.width * CGFloat(parallaxStrength),
-            height: parallaxOffset.height * CGFloat(parallaxStrength)
+            width: (parallaxOffsetMotion.width * CGFloat(parallaxMotionStrength)) + (parallaxOffsetTouch.width * CGFloat(parallaxTouchStrength)),
+            height: (parallaxOffsetMotion.height * CGFloat(parallaxMotionStrength)) + (parallaxOffsetTouch.height * CGFloat(parallaxTouchStrength))
         )
         
         let result = content
             .environment(\.parallaxLevel, actualLevel + 1)
             .offset(
-                x: offsetDamp * parallaxOffset.width * CGFloat(actualLevel),
-                y: offsetDamp * parallaxOffset.height * CGFloat(actualLevel) // FIXME: Z-index offsetting
+                x: offsetDamp * (parallaxOffsetMotion.width + parallaxOffsetTouch.width) * CGFloat(actualLevel) * direction,
+                y: offsetDamp * (parallaxOffsetMotion.height + parallaxOffsetTouch.height) * CGFloat(actualLevel) * direction // FIXME: Z-index offsetting
             )
         
         if actualLevel == 0 {
             let perspective = 0.5
             
             result
-            .rotation3DEffect(
+            /*.rotation3DEffect(
                 Angle.degrees(rotationDampened.width * 0.2),
-                axis: (x: 0, y: 1, z: 0),
+                axis: (0,1,0),
                 perspective: perspective
-            )
+            )*/
             .rotation3DEffect(
-                Angle.degrees(-rotationDampened.height * 0.2),
-                axis: (x: 1, y: 0, z: 0),
+                Angle.degrees((-rotationDampened.height+rotationDampened.width) * 0.2),
+                axis: (1,1,0),
                 perspective: perspective
             )
         } else {
@@ -62,8 +61,8 @@ struct ParallaxModifier: ViewModifier {
 }
 
 extension View {
-    func parallaxLayer(zIndex: Int = 0) -> some View {
+    func parallaxLayer(zIndex: Int = 0, invertMotion:Bool=false) -> some View {
         self
-            .modifier(ParallaxModifier(zIndex: zIndex))
+            .modifier(ParallaxModifier(zIndex: zIndex, direction:invertMotion == true ? -1.0 : 1.0))
     }
 }
