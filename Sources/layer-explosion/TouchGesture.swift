@@ -1,6 +1,6 @@
 //
 //  TouchGesture.swift
-//  
+//
 //
 //  Created by Luis Gonzalez on 18/2/23.
 //
@@ -9,12 +9,13 @@ import SwiftUI
 
 struct ParallaxTouchGesture: ViewModifier {
     var strength: Double
+    
     @State private var gestureOffset = CGSize.zero
     
     func body(content: Content) -> some View {
         content
-            .environment(\.parallaxOffset, gestureOffset)
-            .environment(\.parallaxStrength, strength)
+            .environment(\.parallaxOffsetTouch, gestureOffset)
+            .environment(\.parallaxTouchStrength, strength)
             .gesture(
                 DragGesture()
                     .onChanged { value in

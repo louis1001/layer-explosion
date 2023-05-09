@@ -1,6 +1,6 @@
 //
 //  MotionGesture.swift
-//  
+//
 //
 //  Created by Luis Gonzalez on 18/2/23.
 //
@@ -14,7 +14,7 @@ fileprivate class MotionObserver {
     
     let motionManager: CMMotionManager = {
         let motionManager = CMMotionManager()
-        motionManager.deviceMotionUpdateInterval = 1 / 15
+        motionManager.deviceMotionUpdateInterval = 1 / 30
         
         return motionManager
     }()
@@ -49,6 +49,8 @@ fileprivate class MotionObserver {
                 guard let rotation = data?.rotationRate else { return }
                 manager?.rotationOffset.width += rotation.y
                 manager?.rotationOffset.height += rotation.x
+                manager?.rotationOffset.width *= 0.99
+                manager?.rotationOffset.height *= 0.99
             }
         
     }
@@ -83,11 +85,11 @@ struct ParallaxMotionGesture: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .environment(\.parallaxOffset, motion.rotationOffset)
-            .environment(\.parallaxStrength, strength)
-            .onTapGesture { // TODO: TEMPORARY. JUST FOR TESTING
+            .environment(\.parallaxOffsetMotion, motion.rotationOffset)
+            .environment(\.parallaxMotionStrength, strength)
+            /*.onTapGesture { // TODO: TEMPORARY. JUST FOR TESTING
                 motion.rotationOffset = .zero
-            }
+            }*/
     }
 }
 

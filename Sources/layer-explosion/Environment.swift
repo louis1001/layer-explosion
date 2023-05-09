@@ -1,6 +1,6 @@
 //
 //  Environment.swift
-//  
+//
 //
 //  Created by Luis Gonzalez on 18/2/23.
 //
@@ -11,7 +11,11 @@ struct ParallaxLevel: EnvironmentKey {
     static var defaultValue: Int = 0
 }
 
-struct ParallaxOffset: EnvironmentKey {
+struct ParallaxOffsetMotion: EnvironmentKey {
+    static var defaultValue: CGSize = .zero
+}
+
+struct ParallaxOffsetTouch: EnvironmentKey {
     static var defaultValue: CGSize = .zero
 }
 
@@ -19,7 +23,11 @@ struct ParallaxBorder: EnvironmentKey {
     static var defaultValue: Color? = nil
 }
 
-struct ParallaxStrength: EnvironmentKey {
+struct ParallaxTouchStrength: EnvironmentKey {
+    static var defaultValue: Double = 1
+}
+
+struct ParallaxMotionStrength: EnvironmentKey {
     static var defaultValue: Double = 1
 }
 
@@ -29,9 +37,14 @@ extension EnvironmentValues {
         set { self[ParallaxLevel.self] = newValue }
     }
     
-    var parallaxOffset: CGSize {
-        get { self[ParallaxOffset.self] }
-        set { self[ParallaxOffset.self] = newValue }
+    var parallaxOffsetMotion: CGSize {
+        get { self[ParallaxOffsetMotion.self] }
+        set { self[ParallaxOffsetMotion.self] = newValue }
+    }
+    
+    var parallaxOffsetTouch: CGSize {
+        get { self[ParallaxOffsetTouch.self] }
+        set { self[ParallaxOffsetTouch.self] = newValue }
     }
     
     var parallaxBorder: Color? {
@@ -39,8 +52,12 @@ extension EnvironmentValues {
         set { self[ParallaxBorder.self] = newValue }
     }
     
-    var parallaxStrength: Double {
-        get { self[ParallaxStrength.self] }
-        set { self[ParallaxStrength.self] = newValue }
+    var parallaxTouchStrength: Double {
+        get { self[ParallaxTouchStrength.self] }
+        set { self[ParallaxTouchStrength.self] = newValue }
+    }
+    var parallaxMotionStrength: Double {
+        get { self[ParallaxMotionStrength.self] }
+        set { self[ParallaxMotionStrength.self] = newValue }
     }
 }
