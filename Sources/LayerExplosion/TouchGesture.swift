@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-struct ParallaxTouchGesture: ViewModifier {
-    var strength: Double
+public struct ParallaxTouchGesture: ViewModifier {
+    public var strength: Double
     @State private var gestureOffset = CGSize.zero
     
-    func body(content: Content) -> some View {
+    public func body(content: Content) -> some View {
         content
             .environment(\.parallaxOffset, gestureOffset)
             .environment(\.parallaxStrength, strength)
@@ -30,7 +30,7 @@ struct ParallaxTouchGesture: ViewModifier {
 }
 
 extension View {
-    func parallaxTouchGesture(strength: Double = 1) -> some View {
+    public func parallaxTouchGesture(strength: Double = 1) -> some View {
         self
             .contentShape(Rectangle())
             .parallaxLayer()

@@ -9,6 +9,7 @@ import SwiftUI
 import CoreMotion
 import Combine
 
+#if os(iOS)
 fileprivate class MotionObserver {
     static let shared = MotionObserver()
     
@@ -68,7 +69,7 @@ class MotionManager: ObservableObject {
     
     fileprivate var subscription: AnyCancellable?
     
-    init() {
+    public init() {
         MotionObserver.shared.configure(self)
     }
     
@@ -77,11 +78,11 @@ class MotionManager: ObservableObject {
     }
 }
 
-struct ParallaxMotionGesture: ViewModifier {
+public struct ParallaxMotionGesture: ViewModifier {
     var strength: Double
     @StateObject private var motion = MotionManager()
     
-    func body(content: Content) -> some View {
+    public func body(content: Content) -> some View {
         content
             .environment(\.parallaxOffset, motion.rotationOffset)
             .environment(\.parallaxStrength, strength)
@@ -92,10 +93,11 @@ struct ParallaxMotionGesture: ViewModifier {
 }
 
 extension View {
-    func parallaxMotionGesture(strength: Double = 1) -> some View {
+    public func parallaxMotionGesture(strength: Double = 1) -> some View {
         self
             .contentShape(Rectangle())
             .parallaxLayer()
             .modifier(ParallaxMotionGesture(strength: strength))
     }
 }
+#endif
